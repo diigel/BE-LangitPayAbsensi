@@ -1,5 +1,6 @@
 <?php
 
+if (!defined("SESSIONID")) define("SESSIONID", uniqid());
 /*
 |--------------------------------------------------------------------------
 | Create The Application
@@ -11,7 +12,7 @@
 |
 */
 
-$app = require __DIR__.'/../bootstrap/app.php';
+$app = require __DIR__ . '/../bootstrap/app.php';
 
 /*
 |--------------------------------------------------------------------------
