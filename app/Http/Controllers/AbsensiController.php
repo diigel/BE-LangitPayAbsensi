@@ -24,6 +24,8 @@ class AbsensiController extends Controller
 
         $user = User::where('name', $username)->where('password', $password)->first();
 
+        date_default_timezone_set("Asia/Jakarta");
+
         if (!$user) {
             return Helper::responseError(null, "Data tidak ditemukan");
         } else if ($user->device_uniq != null && $user->device_uniq != $device_uniq) {
@@ -32,8 +34,12 @@ class AbsensiController extends Controller
             if (!$user->device_uniq) {
                 $user->device_uniq = $device_uniq;
                 $user->save();
+            } else {
+                $user->updated_at = date("Y-m-d H:i:s");
+                $user->save();
             }
         }
+
         return Helper::responseSuccess($user, "Login sukses");
     }
 
@@ -75,7 +81,7 @@ class AbsensiController extends Controller
         $absensi->longitude     = $longitude;
         $absensi->address       = $address;
         $absensi->noted         = $noted;
-        $absensi->save;
+        $absensi->save();
 
         return Helper::responseSuccess($absensi, "Berhasil Absen");
     }
