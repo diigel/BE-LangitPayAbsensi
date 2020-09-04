@@ -16,3 +16,4 @@ $router->get('/', function () use ($router) {
 });
 
 $router->post("/login", "AbsensiController@login");
+$router->post("/requestAbsen", "AbsensiController@requestAbsen");
