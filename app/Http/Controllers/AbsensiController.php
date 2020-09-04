@@ -43,6 +43,16 @@ class AbsensiController extends Controller
         return Helper::responseSuccess($user, "Login sukses");
     }
 
+    public function getUser(Request $request)
+    {
+        $device_uniq = $request->input("device_uniq");
+
+        $user = User::where("device_uniq", $device_uniq)->first();
+        if (!$user) return Helper::responseError(null, "User tidak ditemukan");
+
+        return Helper::responseSuccess($user, "Berhasil menampilkan user");
+    }
+
     public function requestAbsen(Request $request)
     {
         $user_id = $request->input("user_id");
@@ -123,4 +133,3 @@ class AbsensiController extends Controller
         ]);
     }
 }
-//unique:lp_user,name

@@ -12,8 +12,9 @@
 */
 
 $router->get('/', function () use ($router) {
-    return $router->app->version();
+    return "Langitpay Absensi";
 });
 
 $router->post("/login", "AbsensiController@login");
 $router->post("/requestAbsen", "AbsensiController@requestAbsen");
+$router->post("/getUser", "AbsensiController@getUser");
