@@ -15,6 +15,9 @@ $router->get('/', function () use ($router) {
     return "Langitpay Absensi";
 });
 
-$router->post("/login", "AbsensiController@login");
-$router->post("/requestAbsen", "AbsensiController@requestAbsen");
-$router->post("/getUser", "AbsensiController@getUser");
+$router->post("/request-login", "AbsensiController@login");
+$router->post("/request-absen", "AbsensiController@requestAbsen");
+$router->post("/request-update-token", "AbsensiController@updateToken");
+
+$router->post("/get-notification", "AbsensiController@getNotification");
+$router->post("/get-user", "AbsensiController@getUser");

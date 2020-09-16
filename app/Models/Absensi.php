@@ -14,7 +14,7 @@ class Absensi extends Model
 
     public function getImageAttribute()
     {
-        return "/Applications/XAMPP/xamppfiles/htdocs/LangitpayAbsensi/public" . $this->attributes["image"];
+        return "http://192.168.100.29/LangitpayAbsensi/storage/Image/" . $this->attributes["image"];
     }
 
     public function user()
