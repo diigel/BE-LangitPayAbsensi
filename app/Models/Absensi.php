@@ -9,12 +9,13 @@ class Absensi extends Model
 
     protected $table = "lp_absensi";
 
+
     const STATUS_INACTIVE   = "0";
     const STATUS_ACTIVE     = "1";
 
     public function getImageAttribute()
     {
-        return "http://192.168.100.29/LangitpayAbsensi/storage/Image/" . $this->attributes["image"];
+        return "http://192.168.5.30/LangitpayAbsensi/storage/Image/" . $this->attributes["image"];
     }
 
     public function user()

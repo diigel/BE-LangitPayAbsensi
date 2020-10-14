@@ -26,8 +26,6 @@ class AbsensiController extends Controller
 
         $user = User::where('name', $username)->where('password', $password)->first();
 
-        date_default_timezone_set("Asia/Jakarta");
-
         if (!$user) {
             return Helper::responseError(null, "Data tidak ditemukan");
         } else if ($user->device_uniq != null && $user->device_uniq != $device_uniq) {
@@ -94,10 +92,19 @@ class AbsensiController extends Controller
         $user = User::find($user_id);
         if (!$user) return Helper::responseError(null, "User Tidak di temukan");
 
+        $absen = Absensi::where("user_id", $user_id)
+            ->where("created_at", ">=", date("Y-m-d") . " 00:00:00")
+            ->where("created_at", "<=", date("Y-m-d") . " 23:59:59")->get();
+
+        if ($absen) {
+            foreach ($absen as $absensi) {
+                if ($absensi->status == "0") return Helper::responseError(null, "Anda Sudah Absen Keluar");
+            }
+        }
+
         Image::make($image)->resize(100, 100);
         $image->move(storage_path("Image"), $image->getClientOriginalName());
 
-        date_default_timezone_set("Asia/Jakarta");
         $absensi                = new Absensi();
         $absensi->name          = $name;
         $absensi->type_absensi  = $type_absensi;
@@ -108,6 +115,8 @@ class AbsensiController extends Controller
         $absensi->longitude     = $longitude;
         $absensi->address       = $address;
         $absensi->noted         = $noted;
+        $absensi->user_id       = $user_id;
+        $absensi->status        = count($absen) <= 0  ? "1" : "0";
         $absensi->save();
 
         if ($type_absensi == "2") {
@@ -116,7 +125,7 @@ class AbsensiController extends Controller
                 "Absen Luar Kantor",
                 "Silahkan tunggu persetujuan hrd untuk verifikasi absen anda",
                 $absensi->type_absensi,
-                $absensi->id
+                count($absen) <= 0  ? "1" : "0"
             );
         } else {
             Helper::sendFcm(
@@ -124,7 +133,7 @@ class AbsensiController extends Controller
                 "Absen Kantor",
                 "Absen Berhasil",
                 $absensi->type_absensi,
-                $absensi->id
+                count($absen) <= 0  ? "1" : "0"
             );
         }
 

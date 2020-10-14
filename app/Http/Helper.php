@@ -54,7 +54,7 @@ class Helper
         return new Response($res, $code);
     }
 
-    public static function sendFcm(User $user, $title, $message, $type, $id = null)
+    public static function sendFcm(User $user, $title, $message, $status, $type)
     {
         $fcmUrl     = env("FCM_URL");
         $server_key = env("SERVER_KEY");
@@ -73,7 +73,7 @@ class Helper
                 "title"                 => $title,
                 "message"               => $message,
                 "type"                  => $type,
-                "id"                    => $id
+                "status"                => $status
             )
         );
 
@@ -87,6 +87,7 @@ class Helper
         $notif->title               = $title;
         $notif->message             = $message;
         $notif->type                = $type;
+        $notif->status                = $status;
         $notif->save();
 
         return $notif;
