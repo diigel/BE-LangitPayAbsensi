@@ -72,8 +72,8 @@ class Helper
             "data"  => array(
                 "title"                 => $title,
                 "message"               => $message,
-                "type"                  => $type,
-                "status"                => $status
+                "status"                => $status,
+                "type"                  => $type
             )
         );
 
@@ -86,8 +86,8 @@ class Helper
         $notif->user_id             = $user->id;
         $notif->title               = $title;
         $notif->message             = $message;
+        $notif->status              = $status;
         $notif->type                = $type;
-        $notif->status                = $status;
         $notif->save();
 
         return $notif;

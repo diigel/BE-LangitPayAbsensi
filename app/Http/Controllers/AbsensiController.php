@@ -60,18 +60,29 @@ class AbsensiController extends Controller
         $token = $request->input("token");
         $device_uniq = $request->input("device_uniq");
 
+        $validator = $this->validator($request, "updateToken");
+        if ($validator->fails()) return Helper::responseError(null, $validator->errors()->first());
+
         $user = User::where("device_uniq", $device_uniq)->first();
+        if (!$user) return Helper::responseError(null, "User tidak di temukan");
         if ($user->token == $token) return Helper::responseError(null, "Token masih sama");
 
         return Helper::responseSuccess($user, "Berhasil Update token");
     }
 
-    public function getNotification()
+    public function getNotification(Request $request)
     {
-        $notif = Notification::get();
-        if (count($notif) <= 0) return Helper::responseError(null, "Belum ada Pemberitahuan");
+        $user_id = $request->input("user_id");
 
-        return Helper::responseSuccess($notif, "Berhasil menampilkan pemberitahuan");
+        $validator = $this->validator($request, "requestNotification");
+        if ($validator->fails()) return Helper::responseError(null, $validator->errors()->first());
+
+        $dataNotif = Notification::where("user_id", $user_id)->orderBy("created_at", "desc")->get();
+        if (count($dataNotif) <= 0) {
+            return Helper::responseError(null, "Kamu belum memiliki pemberitahuan");
+        }
+
+        return Helper::responseSuccess($dataNotif, "Berhasil menampilkan pemberitahuan");
     }
 
     public function requestAbsen(Request $request)
@@ -124,16 +135,16 @@ class AbsensiController extends Controller
                 $user,
                 "Absen Luar Kantor",
                 "Silahkan tunggu persetujuan hrd untuk verifikasi absen anda",
-                $absensi->type_absensi,
-                count($absen) <= 0  ? "1" : "0"
+                count($absen) <= 0  ? "Absen masuk" : "Absen keluar",
+                $absensi->type_absensi
             );
         } else {
             Helper::sendFcm(
                 $user,
                 "Absen Kantor",
                 "Absen Berhasil",
-                $absensi->type_absensi,
-                count($absen) <= 0  ? "1" : "0"
+                count($absen) <= 0  ? "Absen masuk" : "Absen keluar",
+                $absensi->type_absensi
             );
         }
 
@@ -161,6 +172,15 @@ class AbsensiController extends Controller
                 "type_absensi" => "required",
                 "user_id"      => "required|numeric",
                 "image"        => "required"
+            ];
+        } else if ($method == "requestNotification") {
+            $rules = [
+                "user_id" => "required"
+            ];
+        } else if ($method == "updateToken") {
+            $rules = [
+                "device_uniq" => "required",
+                "token"       => "required"
             ];
         }
 
