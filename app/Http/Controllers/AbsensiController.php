@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Helper;
 use App\Models\Absensi;
 use App\Models\Notification;
+use App\Models\OfficeLocation;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
@@ -150,6 +151,16 @@ class AbsensiController extends Controller
 
 
         return Helper::responseSuccess($absensi, "Berhasil Absen");
+    }
+
+
+    public function getOfficeLocation()
+    {
+
+        $office = OfficeLocation::get();
+        if (count($office) <= 0) return Helper::responseError(null, "Kantor tidak di temukan");
+
+        return Helper::responseSuccess($office, "Sukses mengambil lokasi kantor");
     }
 
     private function validator(Request $request, $method)

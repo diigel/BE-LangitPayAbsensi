@@ -21,3 +21,4 @@ $router->post("/request-update-token", "AbsensiController@updateToken");
 
 $router->post("/get-notification", "AbsensiController@getNotification");
 $router->post("/get-user", "AbsensiController@getUser");
+$router->post("/get-OfficeLocation", "AbsensiController@getOfficeLocation");
