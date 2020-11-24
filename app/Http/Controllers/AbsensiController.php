@@ -108,11 +108,13 @@ class AbsensiController extends Controller
             ->where("created_at", ">=", date("Y-m-d") . " 00:00:00")
             ->where("created_at", "<=", date("Y-m-d") . " 23:59:59")->get();
 
-        if ($absen) {
-            foreach ($absen as $absensi) {
-                if ($absensi->status == "0") return Helper::responseError(null, "Anda Sudah Absen Keluar");
-            }
-        }
+        // if ($absen) {
+        //     foreach ($absen as $absensi) {
+        //         if ($absensi->status == "0") return Helper::responseError(null, "Anda Sudah Absen Keluar");
+        //     }
+        // }
+
+        if (count($absen) > 1) return Helper::responseError(null, "Anda Sudah Absen Keluar");
 
         Image::make($image)->resize(100, 100);
         $image->move(storage_path("Image"), $image->getClientOriginalName());
