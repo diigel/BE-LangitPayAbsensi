@@ -114,7 +114,7 @@ class AbsensiController extends Controller
         //     }
         // }
 
-        if (count($absen) > 1) return Helper::responseError(null, "Anda Sudah Absen Keluar");
+        if (count($absen) > 1) return Helper::responseError(null, "Anda Sudah Melakukan Absen Masuk Dan Keluar Pada Hari Ini");
 
         Image::make($image)->resize(100, 100);
         $image->move(storage_path("Image"), $image->getClientOriginalName());
