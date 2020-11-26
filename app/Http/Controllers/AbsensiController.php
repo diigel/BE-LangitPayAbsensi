@@ -137,7 +137,7 @@ class AbsensiController extends Controller
             Helper::sendFcm(
                 $user,
                 "Absen Luar Kantor",
-                "Silahkan tunggu persetujuan hrd untuk verifikasi absen anda",
+                $absensi->name + "Silahkan tunggu persetujuan HRD untuk verifikasi absen anda",
                 count($absen) <= 0  ? "Absen masuk" : "Absen keluar",
                 $absensi->type_absensi
             );
@@ -145,7 +145,7 @@ class AbsensiController extends Controller
             Helper::sendFcm(
                 $user,
                 "Absen Kantor",
-                "Absen Berhasil",
+                $absensi->name + "Kamu Berhasil Absen, Selamat Berkerja !!!",
                 count($absen) <= 0  ? "Absen masuk" : "Absen keluar",
                 $absensi->type_absensi
             );
